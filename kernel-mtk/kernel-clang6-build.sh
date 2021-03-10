@@ -4,13 +4,20 @@ source ~/.bashrc && source ~/.profile
 export LC_ALL=C && export USE_CCACHE=1
 ccache -M 100G
 
+# Defconfig
+if [[ -z ${KERNEL_DEFCONFIG} ]]; then
+    echo -n "Enter your kernel defconfig name: "
+    read -r NAME
+    CONFIG=${KERNEL_DEFCONFIG}
+fi
+
 git clone --depth=1 https://github.com/pgjh/qcom-clang-6 clang-6.0.9
 git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 los-4.9-64
 git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 los-4.9-32
 
 [ -d "out" ] && rm -rf out || mkdir -p out
 
-make O=out ARCH=arm64 oppo6771_18611_deconfig
+make O=out ARCH=arm64 ${CONFIG}
 
 PATH="$(pwd)/clang-6.0.9/bin:${PATH}:$(pwd)/los-4.9-32/bin:${PATH}:$(pwd)/los-4.9-64/bin:${PATH}" \
 make                  O=out \
