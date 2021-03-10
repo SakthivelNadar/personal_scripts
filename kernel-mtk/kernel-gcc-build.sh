@@ -23,13 +23,6 @@ THREAD="-j$CORES"
 CROSS_COMPILE+="$PWD/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 CROSS_COMPILE_ARM32+="$PWD/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
 
-# Modules environtment
-OUTDIR="$PWD/out/"
-SRCDIR="$PWD/"
-MODULEDIR="$PWD/AnyKernel3/modules/system/lib/modules/"
-STRIP="$PWD/aarch64-linux-android-4.9/bin/$(echo "$(find "$PWD/aarch64-linux-android-4.9/bin" -type f -name "aarch64-*-gcc")" | awk -F '/' '{print $NF}' |\
-			sed -e 's/gcc/strip/')"
-
 # Export
 export ARCH=arm64
 export SUBARCH=arm64
@@ -120,26 +113,6 @@ while true; do
 		echo -e "\n#######################################################################"
         echo -e "\n(i) Cloning AnyKernel3 if folder not exist..."
 		git clone -b master https://github.com/osm0sis/AnyKernel3
-		echo -e "\n(i) Strip and move modules to AnyKernel3..."
-
-		# thanks to @adekmaulana
-
-		cd $ZIP_DIR
-		make clean &>/dev/null
-		cd ..
-
-		for MOD in $(find "${OUTDIR}" -name '*.ko') ; do
-			"${STRIP}" --strip-unneeded --strip-debug "${MOD}" &> /dev/null
-			"${SRCDIR}"/scripts/sign-file sha512 \
-					"${OUTDIR}/signing_key.priv" \
-					"${OUTDIR}/signing_key.x509" \
-					"${MOD}"
-			find "${OUTDIR}" -name '*.ko' -exec cp {} "${MODULEDIR}" \;
-			case ${MOD} 
-					cp -ar "${MOD}" 
-			esac
-		done
-		echo -e "\n(i) Done moving modules"
 
 		cd $ZIP_DIR
 		cp $KERN_IMG $ZIP_DIR/zImage
