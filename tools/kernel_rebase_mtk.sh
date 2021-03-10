@@ -29,7 +29,7 @@ PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )"
 
 # Arguements check
 if [ -z ${1} ] || [ -z ${2} ]; then
-    echo -e "Usage: bash kernel_rebase_mtk.sh <kernel zip link/file> <repo name> <OPTIONAL: tag suffix>"
+    echo -e "Usage: bash kernel_rebase_mtk.sh <kernel zip link/file> <repo name>"
 fi
 
 # Download compressed kernel source
