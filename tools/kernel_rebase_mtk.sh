@@ -7,6 +7,23 @@
 #
 # Helper functions
 
+# Setup Git Credentials
+GIT_USERNAME="$(git config --get user.name)"
+GIT_EMAIL="$(git config --get user.email)"
+echo "Configuring git"
+if [[ -z ${GIT_USERNAME} ]]; then
+    echo -n "Enter your name: "
+    read -r NAME
+    git config --global user.name "${NAME}"
+fi
+if [[ -z ${GIT_EMAIL} ]]; then
+    echo -n "Enter your email: "
+    read -r EMAIL
+    git config --global user.email "${EMAIL}"
+fi
+git config --global credential.helper "cache --timeout=7200"
+echo "git identity setup successfully!"
+
 # Store project path
 PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )"
 
@@ -60,7 +77,7 @@ git checkout -b release -q
 rm -rf *
 cp -a ${KERNEL_DIR}/* ${PROJECT_DIR}/kernels/mtk-${KERNEL_VERSION}.${KERNEL_PATCHLEVEL}
 git add --all > /dev/null 2>&1
-git -c "user.name=SparXFusion" -c "user.email=s2234nadar@gmail.com" commit -sm "OEM Release" > /dev/null 2>&1
+git -c "user.name=${GIT_USERNAME}" -c "user.email=${GIT_EMAIL}" commit -sm "OEM Release" > /dev/null 2>&1
 rm -rf ${PROJECT_DIR}/kernels/${UNZIP_DIR}
 
 # Apply OEM modifications
@@ -109,8 +126,8 @@ DIFFPATHS=(
 )
 for ELEMENT in ${DIFFPATHS[@]}; do
     [[ -d $ELEMENT ]] && git add $ELEMENT > /dev/null 2>&1
-    git -c "user.name=SparXFusion" -c "user.email=s2234nadar@gmail.com" commit -sm "Add $ELEMENT modifications" > /dev/null 2>&1
+    git -c "user.name=${GIT_USERNAME}" -c "user.email=${GIT_EMAIL}" commit -sm "Add $ELEMENT modifications" > /dev/null 2>&1
 done
 # Remaining OEM modifications
 git add --all > /dev/null 2>&1
-git -c "user.name=SparXFusion" -c "user.email=s2234nadar@gmail.com" commit -sm "Add remaining OEM modifications" > /dev/null 2>&1
+git -c "user.name=${GIT_USERNAME}" -c "user.email=${GIT_EMAIL}" commit -sm "Add remaining OEM modifications" > /dev/null 2>&1
