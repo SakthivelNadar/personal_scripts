@@ -21,8 +21,6 @@ CROSS_COMPILE_ARM32+="$PWD/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
 OUTDIR="$PWD/out/"
 SRCDIR="$PWD/"
 MODULEDIR="$PWD/AnyKernel3/modules/system/lib/modules/"
-PRIMA="$PWD/AnyKernel3/modules/vendor/lib/modules/wlan.ko"
-PRONTO="$PWD/AnyKernel3/modules/vendor/lib/modules/pronto/pronto_wlan.ko"
 STRIP="$PWD/aarch64-linux-android-4.9/bin/$(echo "$(find "$PWD/aarch64-linux-android-4.9/bin" -type f -name "aarch64-*-gcc")" | awk -F '/' '{print $NF}' |\
 			sed -e 's/gcc/strip/')"
 
@@ -131,15 +129,12 @@ while true; do
 					"${OUTDIR}/signing_key.x509" \
 					"${MOD}"
 			find "${OUTDIR}" -name '*.ko' -exec cp {} "${MODULEDIR}" \;
-			case ${MOD} in
-				*/wlan.ko)
-					cp -ar "${MOD}" "${PRIMA}"
-					cp -ar "${MOD}" "${PRONTO}"
+			case ${MOD} 
+					cp -ar "${MOD}" 
 			esac
 		done
 		echo -e "\n(i) Done moving modules"
 
-		rm $PWD/AnyKernel3/modules/system/lib/modules/wlan.ko
 		cd $ZIP_DIR
 		cp $KERN_IMG $ZIP_DIR/zImage
 		make normal &>/dev/null
