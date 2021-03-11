@@ -12,3 +12,11 @@ Usage: ` . kernel-mtk/kernel-gcc-build.sh`
 3. kernel-clang6-build.sh: A script for building Kernel with Clang 6.
 
 Usage: ` . kernel-mtk/kernel-clang6-build.sh`
+
+4. kernel-clang9-build.sh: A script for building Kernel with Clang 9.
+
+Usage: ` . kernel-mtk/kernel-clang9-build.sh`
+
+5. kernel-evagcc-build.sh: A script for building Kernel with EvaGCC 11.
+
+Usage: ` . kernel-mtk/kernel-evagcc-build.sh`
