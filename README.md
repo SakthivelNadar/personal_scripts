@@ -20,3 +20,7 @@ Usage: ` . kernel-mtk/kernel-clang9-build.sh`
 5. kernel-evagcc-build.sh: A script for building Kernel with EvaGCC 11.
 
 Usage: ` . kernel-mtk/kernel-evagcc-build.sh`
+
+6. setup_build_env.sh: script for setting up build environment and git credentials.
+
+Usage: ` . tools/setup_build_env.sh`
